@@ -1,68 +1,411 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uji Coba HTML</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #result {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Ulang Tahun, Agus! 🎉</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Canvas Confetti Library via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* ==========================================================
+       1. RESET & DASAR
+       ========================================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      /* Background gradien elegan ungu-biru */
+      background: linear-gradient(135deg, #1f1c2c 0%, #442a69 50%, #928dab 100%);
+      color: #ffffff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Lingkaran dekoratif latar belakang untuk memperkuat efek Glassmorphism */
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 1;
+      opacity: 0.6;
+    }
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      background: #ff5e7e;
+      top: 10%;
+      left: 10%;
+    }
+    .circle-2 {
+      width: 350px;
+      height: 350px;
+      background: #5b54fa;
+      bottom: 10%;
+      right: 10%;
+    }
+
+    /* ==========================================================
+       2. KARTU UTAMA (GLASSMORPHISM)
+       ========================================================== */
+    .card-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 35px 28px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      text-align: center;
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Foto / Ilustrasi Avatar */
+    .avatar-wrapper {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 20px;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.4s ease;
+    }
+
+    .avatar-img:hover {
+      transform: scale(1.05) rotate(3deg);
+    }
+
+    .badge-age {
+      position: absolute;
+      bottom: 0;
+      right: 4px;
+      background: #ffb703;
+      color: #1a1a1a;
+      font-size: 1.1rem;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Tipografi */
+    h1.title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fbc2eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+
+    .message-text {
+      font-size: 0.96rem;
+      line-height: 1.7;
+      color: #f1f1f1;
+      font-weight: 300;
+      margin-bottom: 25px;
+    }
+
+    .quote-highlight {
+      font-weight: 600;
+      color: #ffd166;
+    }
+
+    /* ==========================================================
+       3. TOMBOL INTERAKTIF
+       ========================================================== */
+    .btn-surprise {
+      background: linear-gradient(135deg, #ff4b72 0%, #ff8533 100%);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 75, 114, 0.4);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-surprise:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(255, 75, 114, 0.6);
+    }
+
+    .btn-surprise:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    /* ==========================================================
+       4. POPUP / MODAL KEJUTAN
+       ========================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 20, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #1e1b2e;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 30px 24px;
+      text-align: center;
+      transform: scale(0.85);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: #ffd166;
+    }
+
+    .modal-desc {
+      font-size: 0.92rem;
+      color: #d1d1d6;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-close {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .btn-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Animasi Masuk */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Penyesuaian Mobile */
+    @media (max-width: 480px) {
+      .card-container {
+        padding: 28px 20px;
+      }
+      h1.title {
+        font-size: 1.5rem;
+      }
+      .message-text {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Halaman Uji Coba HTML</h2>
-    <p>Ini adalah halaman tes sederhana yang mencakup struktur dasar HTML, styling CSS, dan interaksi JavaScript.</p>
-    
-    <label for="username">Masukkan Nama:</label><br><br>
-    <input type="text" id="username" placeholder="Ketik nama di sini...">
-    <button onclick="runTest()">Jalankan Tes</button>
+  <!-- Efek Bentuk Background -->
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
 
-    <div id="result"></div>
-</div>
+  <!-- Kartu Ucapan Utama -->
+  <main class="card-container">
+    <div class="avatar-wrapper">
+      <!-- Kamu bisa ganti URL foto di bawah dengan foto asli Agus -->
+      <img 
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+        alt="Foto Teman - Agus" 
+        class="avatar-img"
+      />
+      <div class="badge-age">✨</div>
+    </div>
 
-<script>
-    function runTest() {
-        const name = document.getElementById('username').value;
-        const resultDiv = document.getElementById('result');
+    <h1 class="title">Selamat Ulang Tahun, Agus! 🎉</h1>
+
+    <p class="message-text">
+      Di hari yang istimewa ini, semoga setiap langkahmu selalu dipenuhi berkah, kesehatan yang prima, dan kebahagiaan tanpa henti. 
+      <br><br>
+      Terima kasih telah menjadi sahabat yang luar biasa, selalu ada dalam suka dan duka. Semoga segala target, cita-cita, dan impian besarmu di tahun ini tercapai dengan indah.
+      <br><br>
+      <span class="quote-highlight">"Tetaplah bersinar dan jadi inspirasi bagi orang-orang di sekitarmu!"</span>
+    </p>
+
+    <!-- Tombol Interaktif -->
+    <button class="btn-surprise" id="surpriseBtn" aria-label="Buka Pesan Kejutan">
+      <span>🎁 Buka Hadiah Kejutan!</span>
+    </button>
+  </main>
+
+  <!-- Modal / Pop-up Pesan Tambahan -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div style="font-size: 3rem; margin-bottom: 10px;">🎂</div>
+      <h2 class="modal-title">Doa Tambahan Khusus Buatmu!</h2>
+      <p class="modal-desc">
+        Traktiran jangan lupa ya, Gus! 😄 <br><br>
+        Semoga rezekimu semakin melimpah, karier makin melesat, dan segala hal baik selalu mengiringi setiap perjalanan hidupmu. Cheers to another great year! 🥂
+      </p>
+      <button class="btn-close" id="closeBtn">Tutup Pesan</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       JAVASCRIPT: INTERAKSI & ANIMASI
+       ========================================================== -->
+  <script>
+    // Inisialisasi Audio Synth Menggunakan Web Audio API (Tanpa butuh file MP3 eksternal)
+    const playCheerSound = () => {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [261.63, 329.63, 392.00, 523.25]; // Akor C Major (C-E-G-C)
         
-        if (name.trim() === "") {
-            resultDiv.style.color = "red";
-            resultDiv.textContent = "Status: Harap masukkan nama terlebih dahulu.";
-        } else {
-            resultDiv.style.color = "green";
-            resultDiv.textContent = "Status: Skrip berfungsi! Halo, " + name + ".";
-        }
-    }
-</script>
+        notes.forEach((freq, index) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.08);
+          
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime + index * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + index * 0.08 + 0.6);
+          
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          
+          osc.start(audioCtx.currentTime + index * 0.08);
+          osc.stop(audioCtx.currentTime + index * 0.08 + 0.6);
+        });
+      } catch (e) {
+        console.warn('Audio API tidak didukung pada browser ini:', e);
+      }
+    };
 
+    // Fungsi Meluncurkan Konfeti
+    const launchConfetti = (duration = 3000) => {
+      const end = Date.now() + duration;
+      const colors = ['#ff4b72', '#ffb703', '#5b54fa', '#06d6a0', '#ffffff'];
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    };
+
+    // Jalankan konfeti otomatis begitu halaman selesai dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        launchConfetti(2500);
+      }, 400);
+    });
+
+    // Handle Tombol Kejutan
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeBtn = document.getElementById('closeBtn');
+
+    surpriseBtn.addEventListener('click', () => {
+      // Mainkan suara synth kado
+      playCheerSound();
+
+      // Ledakan konfeti dari tengah
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+
+      // Tampilkan Modal
+      modalOverlay.classList.add('active');
+    });
+
+    // Tutup Modal saat klik tombol tutup
+    closeBtn.addEventListener('click', () => {
+      modalOverlay.classList.remove('active');
+    });
+
+    // Tutup Modal jika area luar kartu diklik
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+      }
+    });
+  </script>
 </body>
 </html>
