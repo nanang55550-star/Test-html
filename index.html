@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Coba HTML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Halaman Uji Coba HTML</h2>
+    <p>Ini adalah halaman tes sederhana yang mencakup struktur dasar HTML, styling CSS, dan interaksi JavaScript.</p>
+    
+    <label for="username">Masukkan Nama:</label><br><br>
+    <input type="text" id="username" placeholder="Ketik nama di sini...">
+    <button onclick="runTest()">Jalankan Tes</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function runTest() {
+        const name = document.getElementById('username').value;
+        const resultDiv = document.getElementById('result');
+        
+        if (name.trim() === "") {
+            resultDiv.style.color = "red";
+            resultDiv.textContent = "Status: Harap masukkan nama terlebih dahulu.";
+        } else {
+            resultDiv.style.color = "green";
+            resultDiv.textContent = "Status: Skrip berfungsi! Halo, " + name + ".";
+        }
+    }
+</script>
+
+</body>
+</html>
